@@ -155,8 +155,6 @@ Test:
 curl http://localhost:8080/healthz
 ```
 
----
-
 # Run with Docker Compose
 
 Docker Compose is included for local developer ergonomics and reproducible environments.
@@ -236,8 +234,6 @@ Run unit tests:
 pytest -v
 ```
 
----
-
 # CI Pipeline
 
 GitHub Actions pipeline performs:
@@ -252,89 +248,7 @@ Pipeline definition:
 .github/workflows/ci.yaml
 ```
 
-# Design Decisions
-
-# Why FastAPI?
-
-FastAPI was selected because it provides:
-
-- lightweight framework footprint
-- strong typing support
-- automatic validation
-- production-ready ASGI performance
-- simple observability integration
-
-The framework keeps focus on infrastructure and operational concerns rather than web framework complexity.
-
-
-# Why Versioned Artifacts?
-
-Artifacts are treated similarly to ML models or runtime assets.
-
-Separating artifact versioning from application versioning enables:
-
-- independent rollback
-- safer deployments
-- operational flexibility
-- model lifecycle management
-
-Example:
-
-- application version remains stable
-- artifact switches from `v2` back to `v1`
-
-without rebuilding the container.
-
-
-# Why ConfigMaps?
-
-Configuration is externalized through Kubernetes ConfigMaps to separate:
-
-- runtime configuration
-- deployment configuration
-- application code
-
-This enables:
-
-- environment-specific configuration
-- safer promotion across environments
-- artifact switching without image rebuild
-
-
-# Why Readiness and Liveness Probes?
-
-## Readiness Probe
-
-Ensures traffic is only routed after:
-
-- startup completes
-- artifact loads successfully
-
-This prevents serving requests during initialization.
-
-## Liveness Probe
-
-Detects unhealthy containers and enables automatic restart behavior.
-
-
 # Deployment Strategy
-
-The Deployment uses rolling updates:
-
-```yaml
-strategy:
-  type: RollingUpdate
-```
-
-This minimizes downtime during deployments.
-
-Configuration:
-
-- `maxUnavailable: 0`
-- `maxSurge: 1`
-
-ensures capacity is maintained during rollout.
-
 
 # Rollback Strategy
 
@@ -366,11 +280,8 @@ kubectl rollout restart deployment/artifact-service \
 
 This separation between code deployment and artifact deployment mirrors common ML platform operational patterns.
 
----
 
 # Operational Notes
-
----
 
 # Observability
 
@@ -417,37 +328,6 @@ artifact.local
 
 may be mapped in `/etc/hosts`.
 
----
-
-# Failure Handling
-
-The application intentionally fails fast when:
-
-- artifact files are missing
-- artifact parsing fails
-
-This prevents partially initialized containers from serving traffic.
-
----
-
-# Security Considerations
-
-The deployment includes several production-oriented security settings:
-
-- non-root container
-- read-only root filesystem
-- disabled privilege escalation
-- minimal container image
-
-Additional improvements for production environments could include:
-
-- image vulnerability scanning
-- Kubernetes NetworkPolicies
-- secrets management
-- admission controls
-- signed container images
-
-
 # Tradeoffs
 
 # Simplicity vs Completeness
@@ -464,8 +344,6 @@ Business logic is intentionally minimal because the exercise focuses on producti
 
 
 # Useful Commands
-
----
 
 # View Logs
 
