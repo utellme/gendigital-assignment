@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: artifact-service-config
+  namespace: artifact-service
+
+data:
+  ARTIFACT_VERSION: "v1"
+  LOG_LEVEL: "INFO"

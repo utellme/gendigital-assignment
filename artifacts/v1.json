@@ -1,0 +1,5 @@
+{
+  "version": "v1",
+  "model_name": "model_v1",
+  "features": ["a", "b", "c"]
+}
